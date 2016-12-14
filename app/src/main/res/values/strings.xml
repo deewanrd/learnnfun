@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Learn N Fun</string>
+    <string name="learn_apos_n_apos_fun">learn \'n\' fun</string>
+    <string name="don_apos_t_have_an_account_sign_up">Don\'t have an account? Sign up!</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="roll_no">Roll No.</string>
+    <string name="email">Email</string>
+    <string name="sign_up">Sign up</string>
+    <string name="name">Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="subjects">Subjects</string>
+    <string name="title_activity_home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

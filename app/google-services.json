@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "391209356906",
+    "firebase_url": "https://learnnfun-aaed5.firebaseio.com",
+    "project_id": "learnnfun-aaed5",
+    "storage_bucket": "learnnfun-aaed5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391209356906:android:83f72748ec1b82da",
+        "android_client_info": {
+          "package_name": "com.example.rahul.learnnfun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391209356906-akvj4kh990hvitinqkooi0v11kt1k6fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtr9HB05Cfm6uXn8mL6E3YYiPBFjptRYo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
