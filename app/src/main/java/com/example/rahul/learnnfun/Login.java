@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +29,6 @@ import java.util.Set;
 public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private static final String LOGIN_URL = "http://learnnfun.16mb.com/login.php";
-   //private static final String LOGIN_URL = "10.0.2.2:3306/UserRegistration/login.php";
-
     public static final String KEY_ROLLNO="roll_no";
     public static final String KEY_PASSWORD="password";
 
@@ -47,12 +44,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         editTextRollno = (EditText) findViewById(R.id.roll_no);
         editTextPassword = (EditText) findViewById(R.id.password);
 
         login_button = (Button) findViewById(R.id.login_button);
-        account_confirm= (TextView) findViewById(R.id.account_confirm);
+        account_confirm=(TextView)findViewById(R.id.account_confirm);
 
         login_button.setOnClickListener(this);
         account_confirm.setOnClickListener(this);
@@ -94,7 +92,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void openProfile(){
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, PreviousActivity.class);
         intent.putExtra(KEY_ROLLNO, input_rollno);
         startActivity(intent);
     }
@@ -105,7 +103,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             userLogin();
         }
         if(v==account_confirm){
-            startActivity(new Intent(this,PreviousActivity.class));
+            Intent intent=new Intent(this,Signup.class);
+            startActivity(intent);
         }
     }
 

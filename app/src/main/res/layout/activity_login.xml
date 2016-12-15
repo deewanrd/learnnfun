@@ -78,22 +78,10 @@
         android:layout_height="wrap_content"
         android:text="@string/don_apos_t_have_an_account_sign_up"
         android:id="@+id/account_confirm"
-        android:layout_below="@+id/login_button"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_centerHorizontal="true"
         android:textStyle="bold"
-        android:onClick="onClick" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forgot_password"
-        android:id="@+id/forgot_password"
+        android:onClick="onClick"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/orangeButton"
-        android:textColor="@color/whiteLayout"
-        android:textStyle="bold">
-    </Button>
+        android:layout_marginBottom="11dp" />
 
 </RelativeLayout>

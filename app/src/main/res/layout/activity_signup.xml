@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:fillViewport="false">
-
-    <LinearLayout
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="20dp"
+    tools:context="com.example.rahul.learnnfun.Signup"
     android:background="@color/orangeBackground">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/learn_apos_n_apos_fun"
+        android:text="Sign Up"
         android:textColor="@color/whiteLayout"
         android:id="@+id/title"
         android:layout_alignParentTop="true"
@@ -27,17 +21,35 @@
         android:layout_marginTop="10dp"
         android:textSize="35sp"/>
 
+    <LinearLayout
+        android:id="@+id/first_layout_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white"
+        android:layout_centerHorizontal="true">
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/roll_no"
             android:hint="@string/roll_no"
             android:textColorHint="@color/hintColor"
-            android:layout_below="@+id/title"
             android:background="@android:color/white"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="safsdf" />
+            android:text="safsdf"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Holo.Light.Medium.Inverse" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_layout_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_layout_signup"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/whiteLayout"
+        android:layout_centerHorizontal="true">
+
 
         <EditText
             android:layout_width="match_parent"
@@ -45,10 +57,20 @@
             android:id="@+id/name"
             android:hint="@string/name"
             android:textColorHint="@color/hintColor"
-            android:layout_below="@+id/roll_no"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@android:color/white"
-            android:text="asdfasdf" />
+            android:text="asdfasdf"
+            android:textAppearance="@android:style/TextAppearance.Holo.Light.Medium.Inverse" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/third_layout_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/second_layout_signup"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/whiteLayout"
+        android:layout_centerHorizontal="true">
 
         <EditText
             android:layout_width="match_parent"
@@ -57,32 +79,42 @@
             android:hint="@string/password"
             android:textColorHint="@color/hintColor"
             android:inputType="textPassword"
-            android:layout_below="@+id/name"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@android:color/white"
-            android:text="asdfasdf" />
+            android:text="asdfasdf"
+            android:textAppearance="@android:style/TextAppearance.Holo.Light.Medium.Inverse" />
 
-        <EditText
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fourth_layout_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/third_layout_signup"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/whiteLayout"
+        android:layout_centerHorizontal="true">
+
+    <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/email"
             android:hint="@string/email"
             android:textColorHint="@color/hintColor"
             android:inputType="textEmailAddress"
-            android:layout_below="@+id/passwordp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@android:color/white"
-            android:text="adsfasdf" />
+            android:text="adsfasdf"
+        android:textAppearance="@android:style/TextAppearance.Holo.Light.Medium.Inverse" />
+
+        </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/email"
+        android:layout_below="@+id/fourth_layout_signup"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:id="@+id/signup_button"
         android:text="@string/sign_up"
         android:background="@color/orangeButton"
         android:textStyle="bold" />
 
-</LinearLayout>
-    </ScrollView>
+    </RelativeLayout>

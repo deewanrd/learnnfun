@@ -1,5 +1,6 @@
 package com.example.rahul.learnnfun;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,7 +28,6 @@ import java.util.Map;
 public class Signup extends AppCompatActivity implements View.OnClickListener {
 
     private static final String REGISTER_URL = "http://learnnfun.16mb.com/register.php";
-   // private static final String REGISTER_URL = "10.0.2.2:3306/UserRegistration/register.php";
     public static final String KEY_ROLLNO = "roll_no";
     public static final String KEY_NAME = "name";
     public static final String KEY_PASSWORD = "password";
@@ -45,6 +45,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        getSupportActionBar().hide();
 
         editTextRollno = (EditText) findViewById(R.id.roll_no);
         editTextName = (EditText) findViewById(R.id.name);
@@ -67,6 +68,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(Signup.this,response,Toast.LENGTH_LONG).show();
+                        Intent intent=new Intent(Signup.this,Login.class);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

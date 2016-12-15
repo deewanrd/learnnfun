@@ -24,7 +24,6 @@
         <activity android:name=".Login" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".Home"></activity>
     </application>
 
 </manifest>
