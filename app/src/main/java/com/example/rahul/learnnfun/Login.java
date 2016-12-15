@@ -40,6 +40,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     private String input_rollno;
     private String input_password;
 
+    private boolean loggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         account_confirm.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //In onresume fetching value from sharedpreference
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+
+        //Fetching the boolean value form sharedpreferences
+        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+        //If we will get true
+        if(loggedIn){
+            //We will start the Profile Activity
+            Intent intent = new Intent(Login.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+    }
+
 
     private void userLogin() {
         input_rollno = editTextRollno.getText().toString().trim();
@@ -65,9 +84,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().equals("success")){
-                            openProfile();
-                        }else{
+//                        if(response.trim().equals("success")){
+//                            openProfile();
+//                        }
+                        if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)){
+                            //Creating a shared preference
+                            SharedPreferences sharedPreferences = Login.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+                            //Creating editor to store values to shared preferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                            //Adding values to editor
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                            editor.putString(Config.EMAIL_SHARED_PREF, input_rollno);
+
+                            //Saving values to editor
+                            editor.commit();
+
+                            //Starting profile activity
+                            Intent intent = new Intent(Login.this, ProfileActivity.class);
+                            startActivity(intent);}
+                        else{
                             Toast.makeText(Login.this,response,Toast.LENGTH_LONG).show();
                         }
                     }
@@ -81,8 +118,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<String,String>();
-                map.put(KEY_ROLLNO,input_rollno);
-                map.put(KEY_PASSWORD,input_password);
+//                map.put(KEY_ROLLNO,input_rollno);
+//                map.put(KEY_PASSWORD,input_password);
+                map.put(Config.KEY_ROLLNO,input_rollno);
+                map.put(Config.KEY_PASSWORD, input_password);
+
                 return map;
             }
         };
@@ -92,6 +132,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void openProfile(){
+        Toast.makeText(Login.this,"Logged in",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PreviousActivity.class);
         intent.putExtra(KEY_ROLLNO, input_rollno);
         startActivity(intent);
