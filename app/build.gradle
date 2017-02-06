@@ -4,7 +4,6 @@ android {
     compileSdkVersion 23
     buildToolsVersion '24.0.0'
     useLibrary 'org.apache.http.legacy'
-
     defaultConfig {
         applicationId "com.example.rahul.learnnfun"
         minSdkVersion 16
@@ -17,6 +16,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

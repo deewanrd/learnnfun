@@ -1,23 +1,43 @@
 package com.example.rahul.learnnfun;
 
+/**
+ * Created by Belal on 10/24/2015.
+ */
 public class Config {
-    //URL to our login.php file
-    public static final String LOGIN_URL = "http://learnnfun.16mb.com/login.php";
 
-    //Keys for email and password as defined in our $_POST['key'] in login.php
-    public static final String KEY_ROLLNO="roll_no";
-    public static final String KEY_PASSWORD="password";
+    //Address of our scripts of the CRUD
+    public static final String URL_ADD="http://learnnfun.16mb.com/register.php";
+    public static final String URL_GET_TOPIC="http://learnnfun.16mb.com/topic.php";
+    public static final String ADMIN_LOGIN_URL = "http://learnnfun.16mb.com/login.php";
+    public static final String URL_GET_QUESTION="http://learnnfun.16mb.com/question.php?id=";
 
-    //If server response is equal to this that means login is successful
+
+    //Keys that will be used to send the request to php scripts
+    public static final String KEY_ADMIN_USERNAME = "username";
+    public static final String KEY_ADMIN_NAME = "name";
+    public static final String KEY_ADMIN_EMAIL = "email";
+    public static final String KEY_ADMIN_PASSWORD = "password";
+    public static final String KEY_ADMIN_USER_ID = "user_id";
+
+    //JSON Tags
+    public static final String TAG_JSON_ARRAY="result";
+    public static final String TAG_ID = "id";
+    public static final String TAG_NAME = "name";
+    public static final String TAG_QUESTION = "text";
+    public static final String TAG_OP1 = "op1";
+    public static final String TAG_OP2 = "op2";
+    public static final String TAG_OP3 = "op3";
+    public static final String TAG_OP4 = "op4";
+    public static final String TAG_ANS = "ans";
+
+
+    //employee id to pass with intent
+    public static final String TOPIC_ID = "topic_id";
+
+
     public static final String LOGIN_SUCCESS = "success";
-
-    //Keys for Sharedpreferences
-    //This would be the name of our shared preferences
     public static final String SHARED_PREF_NAME = "myloginapp";
-
-    //This would be used to store the email of current logged in user
     public static final String EMAIL_SHARED_PREF = "email";
-
-    //We will use this to store the boolean in sharedpreference to track user is loggedin or not
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
+
 }

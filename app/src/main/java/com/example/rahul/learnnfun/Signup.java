@@ -1,103 +1,120 @@
 package com.example.rahul.learnnfun;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Logger;
 
-public class Signup extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String REGISTER_URL = "http://learnnfun.16mb.com/register.php";
-    public static final String KEY_ROLLNO = "roll_no";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_EMAIL = "email";
+public class Signup extends AppCompatActivity implements View.OnClickListener{
 
 
-    private EditText editTextRollno;
+    //Defining views
+    private EditText editTextUsername;
     private EditText editTextName;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private TextView already_login;
 
-    private Button signup_button;
+    private Button buttonAdminSignup;
+
+    Logger logger=Logger.getLogger("AdminSignup");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        getSupportActionBar().hide();
 
-        editTextRollno = (EditText) findViewById(R.id.roll_no);
-        editTextName = (EditText) findViewById(R.id.name);
-        editTextPassword = (EditText) findViewById(R.id.password);
-        editTextEmail= (EditText) findViewById(R.id.email);
+        //Initializing views
+        editTextUsername = (EditText) findViewById(R.id.input_username);
+        editTextName = (EditText) findViewById(R.id.input_name);
+        editTextEmail = (EditText) findViewById(R.id.input_email);
+        editTextPassword = (EditText) findViewById(R.id.input_password);
+        buttonAdminSignup = (Button) findViewById(R.id.btn_signup);
+        already_login=(TextView)findViewById(R.id.already_login);
 
-        signup_button = (Button) findViewById(R.id.signup_button);
 
-        signup_button.setOnClickListener(this);
+        //Setting listeners to button
+        buttonAdminSignup.setOnClickListener(this);
+        already_login.setOnClickListener(this);
     }
 
-    private void registerUser(){
-        final String input_rollno = editTextRollno.getText().toString().trim();
-        final String input_name = editTextName.getText().toString().trim();
-        final String input_password = editTextPassword.getText().toString().trim();
-        final String input_email = editTextEmail.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(Signup.this,response,Toast.LENGTH_LONG).show();
-                        Intent intent=new Intent(Signup.this,Login.class);
-                        startActivity(intent);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Signup.this,error.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }){
+    //Adding an employee
+    private void addAdmin(){
+
+        final String username = editTextUsername.getText().toString().trim();
+        final String name = editTextName.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
+
+
+        class AddAdmin extends AsyncTask<Void,Void,String> {
+
+            ProgressDialog loading;
+
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put(KEY_ROLLNO,input_rollno);
-                params.put(KEY_NAME,input_name);
-                params.put(KEY_PASSWORD,input_password);
-                params.put(KEY_EMAIL, input_email);
-                return params;
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(Signup.this,"Adding...","Wait...",false,false);
+                logger.info("Hi");
             }
 
-        };
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                if(s.equalsIgnoreCase("oops! Please try again!")
+                        ||s.equalsIgnoreCase("error")
+                        ||s.equalsIgnoreCase("please fill all values")){
+                    Toast.makeText(Signup.this,s,Toast.LENGTH_LONG).show();
+                    logger.info("Hidf");}
+                else {
+                    Toast.makeText(Signup.this,s,Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Signup.this, Login.class);
+                    intent.putExtra("UID", s);
+                    startActivity(intent);
+                }
+            }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            @Override
+            protected String doInBackground(Void... v) {
+                logger.info("Hi12345");
+                HashMap<String,String> params = new HashMap<>();
+                params.put(Config.KEY_ADMIN_USERNAME,username);
+                params.put(Config.KEY_ADMIN_NAME,name);
+                params.put(Config.KEY_ADMIN_EMAIL,email);
+                params.put(Config.KEY_ADMIN_PASSWORD,password);
+
+
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(Config.URL_ADD, params);
+                return res;
+            }
+        }
+
+        AddAdmin ae = new AddAdmin();
+        ae.execute();
     }
 
     @Override
     public void onClick(View v) {
-        if(v == signup_button){
-            registerUser();
+        if(v == buttonAdminSignup){
+            addAdmin();
+        }
+        if(v==already_login){
+            startActivity(new Intent(this,Login.class));
         }
     }
 }
+

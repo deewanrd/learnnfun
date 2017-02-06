@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Signup" />
-        <activity android:name=".PreviousActivity" />
+        <activity android:name=".Topic" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".Login" />
         <activity android:name=".ResultActivity" />
