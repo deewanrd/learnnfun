@@ -1,11 +1,19 @@
 package com.example.rahul.learnnfun;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.util.logging.Logger;
+
 public class ResultActivity extends Activity {
+
+    Logger logger=Logger.getLogger("ResultActivity");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +25,8 @@ public class ResultActivity extends Activity {
 //get score
         Bundle b = getIntent().getExtras();
         int score = b.getInt("score");
+        logger.info(String.valueOf(score));
+        //t.setText(score);
 //display score
         bar.setRating(score);
         switch (score) {
@@ -32,6 +42,20 @@ public class ResultActivity extends Activity {
                 t.setText("Who are you? A trivia wizard???");
                 break;
         }
+    }
+
+    public void onBackPressed(){
+        new AlertDialog.Builder(this)
+                .setTitle("Another One!")
+                .setMessage("Ready for another quiz!")
+                .setNegativeButton("No",null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i=new Intent(ResultActivity.this,Topic.class);
+                        startActivity(i);
+                    }
+                }).create().show();
     }
 
 }

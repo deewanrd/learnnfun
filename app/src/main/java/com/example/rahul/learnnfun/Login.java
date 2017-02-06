@@ -1,13 +1,12 @@
 package com.example.rahul.learnnfun;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,138 +20,104 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.util.Collection;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String LOGIN_URL = "http://learnnfun.16mb.com/login.php";
-    public static final String KEY_ROLLNO="roll_no";
-    public static final String KEY_PASSWORD="password";
-
-    private EditText editTextRollno;
+    private EditText editTextUsername;
     private EditText editTextPassword;
-    private Button login_button;
-    private TextView account_confirm;
-
-    private String input_rollno;
-    private String input_password;
+    private TextView no_account;
+    private Button btnlogin;
 
     private boolean loggedIn = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
 
-        editTextRollno = (EditText) findViewById(R.id.roll_no);
-        editTextPassword = (EditText) findViewById(R.id.password);
-
-        login_button = (Button) findViewById(R.id.login_button);
-        account_confirm=(TextView)findViewById(R.id.account_confirm);
-
-        login_button.setOnClickListener(this);
-        account_confirm.setOnClickListener(this);
+        editTextUsername = (EditText) findViewById(R.id.input_username);
+        editTextPassword = (EditText) findViewById(R.id.input_password);
+        no_account = (TextView) findViewById(R.id.no_account);
+        no_account.setOnClickListener(this);
+        btnlogin = (Button) findViewById(R.id.btn_login);
+        btnlogin.setOnClickListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+//    protected void onResume() {
+//        super.onResume();
+//        //In onresume fetching value from sharedpreference
+//        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//
+//        //Fetching the boolean value form sharedpreferences
+//        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+//
+//        //If we will get true
+//        if (loggedIn) {
+//            //We will start the Profile Activity
+//            Intent intent = new Intent(Login.this, Topic.class);
+//            startActivity(intent);
+//        }
+//    }
 
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
-        //If we will get true
-        if(loggedIn){
-            //We will start the Profile Activity
-            Intent intent = new Intent(Login.this, ProfileActivity.class);
-            startActivity(intent);
-        }
+   private void login(){
+        String username = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        userLogin(username,password);
     }
 
-
-    private void userLogin() {
-        input_rollno = editTextRollno.getText().toString().trim();
-        input_password = editTextPassword.getText().toString().trim();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                        if(response.trim().equals("success")){
-//                            openProfile();
-//                        }
-                        if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)){
-                            //Creating a shared preference
-                            SharedPreferences sharedPreferences = Login.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                            //Creating editor to store values to shared preferences
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            //Adding values to editor
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                            editor.putString(Config.EMAIL_SHARED_PREF, input_rollno);
-
-                            //Saving values to editor
-                            editor.commit();
-
-                            //Starting profile activity
-                            Intent intent = new Intent(Login.this, ProfileActivity.class);
-                            startActivity(intent);}
-                        else{
-                            Toast.makeText(Login.this,response,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Login.this,error.toString(),Toast.LENGTH_LONG ).show();
-                    }
-                }){
+    private void userLogin(final String username, final String password){
+        class UserLoginClass extends AsyncTask<Void,Void,String> {
+            ProgressDialog loading;
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<String,String>();
-//                map.put(KEY_ROLLNO,input_rollno);
-//                map.put(KEY_PASSWORD,input_password);
-                map.put(Config.KEY_ROLLNO,input_rollno);
-                map.put(Config.KEY_PASSWORD, input_password);
-
-                return map;
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(Login.this,"Please Wait",null,true,true);
             }
-        };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                if(s.equalsIgnoreCase("success")){
+                    Toast.makeText(Login.this,"Successfully Logged in",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this,Topic.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(Login.this,s,Toast.LENGTH_LONG).show();
+                }
+            }
 
-    private void openProfile(){
-        Toast.makeText(Login.this,"Logged in",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, PreviousActivity.class);
-        intent.putExtra(KEY_ROLLNO, input_rollno);
-        startActivity(intent);
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> data = new HashMap<>();
+                data.put(Config.KEY_ADMIN_USERNAME,username);
+                data.put(Config.KEY_ADMIN_PASSWORD,password);
+
+                RequestHandler ruc = new RequestHandler();
+
+                String result = ruc.sendPostRequest(Config.ADMIN_LOGIN_URL,data);
+
+                return result;
+            }
+        }
+        UserLoginClass ulc = new UserLoginClass();
+        ulc.execute();
     }
 
     @Override
     public void onClick(View v) {
-        if(v==login_button) {
-            userLogin();
+        //Calling the login function
+        if (v == btnlogin) {
+            login();
         }
-        if(v==account_confirm){
-            Intent intent=new Intent(this,Signup.class);
-            startActivity(intent);
+        if (v == no_account) {
+            startActivity(new Intent(this, Signup.class));
         }
     }
-
 }
-
-
-
-
-
-

@@ -12,5 +12,5 @@
         android:paddingBottom="2dip"
         android:paddingTop="6dip"
         android:textStyle="bold"
-        android:id="@+id/name"/>
+        android:id="@+id/topic_name"/>
 </LinearLayout>

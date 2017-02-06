@@ -46,7 +46,7 @@ public class CustomList extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.list_item, null, true);
-        TextView name=(TextView)listViewItem.findViewById(R.id.name);
+        TextView name=(TextView)listViewItem.findViewById(R.id.topic_name);
 //        TextView textViewId = (TextView) listViewItem.findViewById(R.id.textViewId);
 //        TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
 //        TextView textViewEmail = (TextView) listViewItem.findViewById(R.id.textViewEmail);

@@ -13,7 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -33,130 +37,209 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class QuizActivity extends Activity {
     List<Question> quesList;
     int score = 0;
     int qid = 0;
     Question currentQ;
-    TextView txtQuestion;
-    RadioButton rda, rdb, rdc;
+    RadioButton radio0,radio1,radio2,radio3;
     Button butNext;
-
-    private TextView Textv;
-    private static final String REGISTER_URL = "http://learnnfun.16mb.com/question.php";
-    public static final String KEY_USERNAME = "username";
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_TOPIC = "subject_id";
-
+    private TextView question_text;
     Logger logger = Logger.getLogger("QuizActivity");
-
+    private String topic_id;
+    private String JSON_STRING;
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        Textv = (TextView) findViewById(R.id.textView1);
-        Intent iin = getIntent();
-        Bundle b = iin.getExtras();
-
-        if (b != null) {
-            long j = iin.getLongExtra("sentIntent", 0);
-            Textv.setText(j + "");
-            //  logger.info(String.valueOf(j));
-            quiz(Integer.toString((int) j));
-        }
+        question_text = (TextView) findViewById(R.id.question_text);
+        Intent intent = getIntent();
+        topic_id = intent.getStringExtra(Config.TOPIC_ID);
+        radio0 = (RadioButton) findViewById(R.id.radio0);
+        radio1 = (RadioButton) findViewById(R.id.radio1);
+        radio2 = (RadioButton) findViewById(R.id.radio2);
+        radio3 = (RadioButton) findViewById(R.id.radio3);
+        butNext = (Button) findViewById(R.id.button1);
+        getQuestion();
     }
 
-    private void quiz(String j) {
-        final int k = Integer.parseInt(j);
+    private void getQuestion(){
+        class GetQuestion extends AsyncTask<Void,Void,String>{
+                ProgressDialog loading;
 
-//        final String username = editTextUsername.getText().toString().trim();
-//        final String password = editTextPassword.getText().toString().trim();
-//        final String email = editTextEmail.getText().toString().trim();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(QuizActivity.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(QuizActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put(KEY_USERNAME,username);
-//                params.put(KEY_PASSWORD,password);
-//                params.put(KEY_EMAIL, email);
-                params.put(KEY_TOPIC, Integer.toString(k));
-                return params;
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(QuizActivity.this,"Fetching...","Wait...",false,false);
             }
 
-        };
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING=s;
+                showQuestion();
+            }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                logger.info(topic_id+"hu");
+                String s = rh.sendGetRequestParam(Config.URL_GET_QUESTION,topic_id);
+                logger.info(s);
+                return s;
+            }
+        }
+        GetQuestion gq=new GetQuestion();
+        gq.execute();
     }
+
+    private void showQuestion(){
+            JSONObject jsonObject =null;
+        quesList=new ArrayList<Question>();
+            try {
+                jsonObject = new JSONObject(JSON_STRING);
+                JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+                currentQ = new Question();
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    logger.info(String.valueOf(jo));
+                    int id = jo.getInt(Config.TAG_ID);
+                    String question = jo.getString(Config.TAG_QUESTION);
+                    String op1 = jo.getString(Config.TAG_OP1);
+                    String op2 = jo.getString(Config.TAG_OP2);
+                    String op3 = jo.getString(Config.TAG_OP3);
+                    String op4 = jo.getString(Config.TAG_OP4);
+                    String ans = jo.getString(Config.TAG_ANS);
+                    currentQ = new Question(question, op1, op2, op3, op4, ans);
+                    quesList.add(currentQ);
+                    logger.info(question);
+                    logger.info(op1);
+                    logger.info(currentQ.getQUESTION());
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        currentQ=quesList.get(qid);
+        setQuestionView();
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+//                radio0.setEnabled(false);
+//                radio1.setEnabled(false);
+//                radio2.setEnabled(false);
+//                radio3.setEnabled(false);
+                RadioButton rb=(RadioButton)findViewById(checkedId);
+                if(currentQ.getANSWER().equalsIgnoreCase((String) rb.getText())){
+                    //rb.setBackgroundColor(Color.GREEN);
+                    score++;
+                }
+                else {
+                    //rb.setBackgroundColor(Color.RED);
+                }
+            }
+        });
+
+                    butNext.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                          //  radioGroup.clearCheck();
+                            if(qid<quesList.size()){
+                                radioGroup=(RadioGroup)findViewById(R.id.radioGroup1);
+//                                radio0.setEnabled(true);
+//                                radio1.setEnabled(true);
+//                                radio2.setEnabled(true);
+//                                radio3.setEnabled(true);
+
+//                                radio0.setBackgroundColor(Color.WHITE);
+//                                radio1.setBackgroundColor(Color.WHITE);
+//                                radio2.setBackgroundColor(Color.WHITE);
+//                                radio3.setBackgroundColor(Color.WHITE);
+
+                                radio0.setChecked(false);
+                                radio1.setChecked(false);
+                                radio2.setChecked(false);
+                                radio3.setChecked(false);
+
+                                currentQ=quesList.get(qid);
+                                setQuestionView();
+                               // RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
+
+                                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+                                {
+                                    @Override
+                                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                        // checkedId is the RadioButton selected
+//                                        radio0.setEnabled(false);
+//                                        radio1.setEnabled(false);
+//                                        radio2.setEnabled(false);
+//                                        radio3.setEnabled(false);
+                                        RadioButton rb=(RadioButton)findViewById(checkedId);
+                                        if(currentQ.getANSWER().equalsIgnoreCase((String) rb.getText())){
+                                           // rb.setBackgroundColor(Color.GREEN);
+                                            score++;
+                                        }
+                                        else {
+                                           // rb.setBackgroundColor(Color.RED);
+                                        }
+                                    }
+                                });
+
+                            }
+                            else {
+                                Intent intent=new Intent(QuizActivity.this,ResultActivity.class);
+                                intent.putExtra("score",score);
+                                startActivity(intent);
+                            }
+
+                        }
+                        });
+                }
+
+    private void setQuestionView()
+    {
+
+        question_text.setText(currentQ.getQUESTION());
+        radio0.setText(currentQ.getOPTA());
+        radio1.setText(currentQ.getOPTB());
+        radio2.setText(currentQ.getOPTC());
+        radio3.setText(currentQ.getOPTD());
+
+        qid++;
+    }
+
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit")
+                .setNegativeButton("No",null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logger.info(String.valueOf(score));
+                        Intent i=new Intent(QuizActivity.this,ResultActivity.class);
+                        i.putExtra("score",score);
+                        startActivity(i);
+                    }
+                }).create().show();
+    }
+
+
 }
-
-//    private void quiz(String j){
-//            class SendData extends AsyncTask<String,Void,String>{
-//
-//                @Override
-//                protected String doInBackground(String... params) {
-//                    int id= Integer.parseInt(params[0]);
-//                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//                    nameValuePairs.add(new BasicNameValuePair("name",Integer.toString(id)));
-//                    logger.info(nameValuePairs.toString());
-//                  //  nameValuePairs.add(new BasicNameValuePair("address", add));
-//                    try {
-//                        HttpClient httpClient = new DefaultHttpClient();
-//                        HttpPost httpPost = new HttpPost("http://learnnfun.16mb.com/question.php");
-//                        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-//
-//                        HttpResponse response = httpClient.execute(httpPost);
-//
-//                        HttpEntity entity = response.getEntity();
-//
-//
-//                        } catch (ClientProtocolException e) {
-//
-//                        } catch (IOException e) {
-//
-//                        }
-//                    return "success";
-//                    }
-//
-//
-//            }
-//            SendData sd=new SendData();
-//            sd.execute(j);
-//            }
-//
-//
-//    }
-
-
-
-
-
 
     /*protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
