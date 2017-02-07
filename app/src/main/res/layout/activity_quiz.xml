@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button1"
+            android:onClick="next"
             android:text="Next"/>
 
     </LinearLayout>
@@ -51,40 +52,38 @@
             android:layout_marginLeft="10dp"
             android:fontFamily="cursive" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.00"
-            android:paddingLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp">
 
-            <RadioButton
+
+            <TextView
                 android:id="@+id/radio0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="onclick"/>
 
-            <RadioButton
+            <TextView
                 android:id="@+id/radio1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:onClick="onclick"/>
 
-            <RadioButton
+            <TextView
                 android:id="@+id/radio2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:onClick="onclick"/>
 
-            <RadioButton
+            <TextView
                 android:id="@+id/radio3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:onClick="onclick"
+                />
 
-        </RadioGroup>
+
 
     </LinearLayout>
     </ScrollView>
