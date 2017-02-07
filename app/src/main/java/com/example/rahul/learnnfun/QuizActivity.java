@@ -1,18 +1,6 @@
 package com.example.rahul.learnnfun;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,26 +8,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class QuizActivity extends Activity {
     List<Question> quesList;
@@ -47,6 +27,7 @@ public class QuizActivity extends Activity {
     int qid = 0;
     Question currentQ;
     RadioButton radio0,radio1,radio2,radio3;
+    TextView t0,t1,t2,t3;
     Button butNext;
     private TextView question_text;
     Logger logger = Logger.getLogger("QuizActivity");
@@ -62,10 +43,16 @@ public class QuizActivity extends Activity {
         question_text = (TextView) findViewById(R.id.question_text);
         Intent intent = getIntent();
         topic_id = intent.getStringExtra(Config.TOPIC_ID);
-        radio0 = (RadioButton) findViewById(R.id.radio0);
+       /* radio0 = (RadioButton) findViewById(R.id.radio0);
         radio1 = (RadioButton) findViewById(R.id.radio1);
         radio2 = (RadioButton) findViewById(R.id.radio2);
-        radio3 = (RadioButton) findViewById(R.id.radio3);
+        radio3 = (RadioButton) findViewById(R.id.radio3);*/
+
+        t0 = (TextView) findViewById(R.id.radio0);
+        t1 = (TextView) findViewById(R.id.radio1);
+        t2 = (TextView) findViewById(R.id.radio2);
+        t3 = (TextView) findViewById(R.id.radio3);
+
         butNext = (Button) findViewById(R.id.button1);
         getQuestion();
     }
@@ -101,123 +88,177 @@ public class QuizActivity extends Activity {
         gq.execute();
     }
 
-    private void showQuestion(){
-            JSONObject jsonObject =null;
-        quesList=new ArrayList<Question>();
-            try {
-                jsonObject = new JSONObject(JSON_STRING);
-                JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
-                currentQ = new Question();
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject jo = result.getJSONObject(i);
-                    logger.info(String.valueOf(jo));
-                    int id = jo.getInt(Config.TAG_ID);
-                    String question = jo.getString(Config.TAG_QUESTION);
-                    String op1 = jo.getString(Config.TAG_OP1);
-                    String op2 = jo.getString(Config.TAG_OP2);
-                    String op3 = jo.getString(Config.TAG_OP3);
-                    String op4 = jo.getString(Config.TAG_OP4);
-                    String ans = jo.getString(Config.TAG_ANS);
-                    currentQ = new Question(question, op1, op2, op3, op4, ans);
-                    quesList.add(currentQ);
-                    logger.info(question);
-                    logger.info(op1);
-                    logger.info(currentQ.getQUESTION());
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
+
+    private void showQuestion() {
+        JSONObject jsonObject = null;
+        quesList = new ArrayList<Question>();
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+            currentQ = new Question();
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject jo = result.getJSONObject(i);
+                logger.info(String.valueOf(jo));
+                int id = jo.getInt(Config.TAG_ID);
+                String question = jo.getString(Config.TAG_QUESTION);
+                String op1 = jo.getString(Config.TAG_OP1);
+                String op2 = jo.getString(Config.TAG_OP2);
+                String op3 = jo.getString(Config.TAG_OP3);
+                String op4 = jo.getString(Config.TAG_OP4);
+                String ans = jo.getString(Config.TAG_ANS);
+                currentQ = new Question(question, op1, op2, op3, op4, ans);
+                quesList.add(currentQ);
+                logger.info(question);
+                logger.info(op1);
+                logger.info(currentQ.getQUESTION());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-        currentQ=quesList.get(qid);
+        currentQ = quesList.get(qid);
         setQuestionView();
-
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // checkedId is the RadioButton selected
-//                radio0.setEnabled(false);
-//                radio1.setEnabled(false);
-//                radio2.setEnabled(false);
-//                radio3.setEnabled(false);
-                RadioButton rb=(RadioButton)findViewById(checkedId);
-                if(currentQ.getANSWER().equalsIgnoreCase((String) rb.getText())){
-                    //rb.setBackgroundColor(Color.GREEN);
+    }
+    public void onclick(View view){
+        logger.info(t0.getText().toString());
+        switch (view.getId()){
+            case R.id.radio0:
+                if(currentQ.getANSWER().equalsIgnoreCase(t0.getText().toString())){
                     score++;
+                    t0.setBackgroundColor(Color.GREEN);
+                    t1.setClickable(false);
+                    t2.setClickable(false);
+                    t3.setClickable(false);
                 }
-                else {
-                    //rb.setBackgroundColor(Color.RED);
+                else{
+                    t0.setBackgroundColor(Color.RED);
+                    String s=currentQ.getANSWER();
+                    if(s.equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.GREEN);
+                    }
+                    t1.setClickable(false);
+                    t2.setClickable(false);
+                    t3.setClickable(false);
                 }
-            }
-        });
-
-                    butNext.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                          //  radioGroup.clearCheck();
-                            if(qid<quesList.size()){
-                                radioGroup=(RadioGroup)findViewById(R.id.radioGroup1);
-//                                radio0.setEnabled(true);
-//                                radio1.setEnabled(true);
-//                                radio2.setEnabled(true);
-//                                radio3.setEnabled(true);
-
-//                                radio0.setBackgroundColor(Color.WHITE);
-//                                radio1.setBackgroundColor(Color.WHITE);
-//                                radio2.setBackgroundColor(Color.WHITE);
-//                                radio3.setBackgroundColor(Color.WHITE);
-
-                                radio0.setChecked(false);
-                                radio1.setChecked(false);
-                                radio2.setChecked(false);
-                                radio3.setChecked(false);
-
-                                currentQ=quesList.get(qid);
-                                setQuestionView();
-                               // RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-
-                                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-                                {
-                                    @Override
-                                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                                        // checkedId is the RadioButton selected
-//                                        radio0.setEnabled(false);
-//                                        radio1.setEnabled(false);
-//                                        radio2.setEnabled(false);
-//                                        radio3.setEnabled(false);
-                                        RadioButton rb=(RadioButton)findViewById(checkedId);
-                                        if(currentQ.getANSWER().equalsIgnoreCase((String) rb.getText())){
-                                           // rb.setBackgroundColor(Color.GREEN);
-                                            score++;
-                                        }
-                                        else {
-                                           // rb.setBackgroundColor(Color.RED);
-                                        }
-                                    }
-                                });
-
-                            }
-                            else {
-                                Intent intent=new Intent(QuizActivity.this,ResultActivity.class);
-                                intent.putExtra("score",score);
-                                startActivity(intent);
-                            }
-
-                        }
-                        });
+                break;
+            case R.id.radio1:
+                if(currentQ.getANSWER().equalsIgnoreCase(t1.getText().toString())){
+                    score++;
+                    t1.setBackgroundColor(Color.GREEN);
+                    t0.setClickable(false);
+                    t2.setClickable(false);
+                    t3.setClickable(false);
                 }
+                else{
+                    String s=currentQ.getANSWER();
+                    t1.setBackgroundColor(Color.RED);
+                    if(s.equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.GREEN);
+                    }
+
+                    t0.setClickable(false);
+                    t2.setClickable(false);
+                    t3.setClickable(false);
+                }
+                break;
+
+            case R.id.radio2:
+                if(currentQ.getANSWER().equalsIgnoreCase(t2.getText().toString())){
+                    score++;
+                    t2.setBackgroundColor(Color.GREEN);
+                    t1.setClickable(false);
+                    t0.setClickable(false);
+                    t3.setClickable(false);
+                }
+                else{
+                    t2.setBackgroundColor(Color.RED);
+                    String s=currentQ.getANSWER();
+                    if(s.equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.GREEN);
+                    }
+                    t1.setClickable(false);
+                    t0.setClickable(false);
+                    t3.setClickable(false);
+                }
+                break;
+
+            case R.id.radio3:
+                if(currentQ.getANSWER().equalsIgnoreCase(t3.getText().toString())){
+                    score++;
+                    t3.setBackgroundColor(Color.GREEN);
+                    t1.setClickable(false);
+                    t2.setClickable(false);
+                    t0.setClickable(false);
+                }
+                else{
+                    t3.setBackgroundColor(Color.RED);
+                    String s=currentQ.getANSWER();
+                    if(s.equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(s.equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.GREEN);
+                    }
+                    t1.setClickable(false);
+                    t2.setClickable(false);
+                    t0.setClickable(false);
+                }
+                break;
+        }
+    }
+
+    public void next(View v){
+        t0.setBackgroundColor(Color.WHITE);
+        t1.setBackgroundColor(Color.WHITE);
+        t2.setBackgroundColor(Color.WHITE);
+        t3.setBackgroundColor(Color.WHITE);
+        t0.setClickable(true);
+        t1.setClickable(true);
+        t2.setClickable(true);
+        t3.setClickable(true);
+        if(qid<quesList.size()){
+            currentQ=quesList.get(qid);
+            setQuestionView();
+        }
+        else {
+            Intent i=new Intent(QuizActivity.this,ResultActivity.class);
+            i.putExtra("score",score);
+            startActivity(i);
+        }
+    }
+
+// *************************************************************************************
 
     private void setQuestionView()
     {
 
         question_text.setText(currentQ.getQUESTION());
-        radio0.setText(currentQ.getOPTA());
-        radio1.setText(currentQ.getOPTB());
-        radio2.setText(currentQ.getOPTC());
-        radio3.setText(currentQ.getOPTD());
+        t0.setText(currentQ.getOPTA());
+        t1.setText(currentQ.getOPTB());
+        t2.setText(currentQ.getOPTC());
+        t3.setText(currentQ.getOPTD());
 
         qid++;
     }
