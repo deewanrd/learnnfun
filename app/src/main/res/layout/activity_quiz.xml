@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#000000"
     tools:context="com.example.rahul.learnnfun.QuizActivity">
 
     <LinearLayout
@@ -18,14 +19,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button2"
-            android:text="Prev"/>
+            android:onClick="previous"
+            android:text="Prev"
+            android:background="#FFFFFF"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button1"
             android:onClick="next"
-            android:text="Next"/>
+            android:text="Next"
+            android:background="#FFFFFF"
+            android:layout_marginLeft="5dp"/>
 
     </LinearLayout>
 
@@ -53,37 +58,55 @@
             android:fontFamily="cursive" />
 
 
-
-            <TextView
+        <TextView
                 android:id="@+id/radio0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:onClick="onclick"/>
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="22sp"
+                android:onClick="onclick"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/back"/>
 
-            <TextView
+        <TextView
                 android:id="@+id/radio1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:onClick="onclick"/>
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="22sp"
+                android:onClick="onclick"
+                android:background="@drawable/back"/>
 
             <TextView
                 android:id="@+id/radio2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:onClick="onclick"/>
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="22sp"
+                android:onClick="onclick"
+                android:background="@drawable/back"/>
 
             <TextView
                 android:id="@+id/radio3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="22sp"
                 android:onClick="onclick"
-                />
-
-
+                android:background="@drawable/back"/>
 
     </LinearLayout>
     </ScrollView>

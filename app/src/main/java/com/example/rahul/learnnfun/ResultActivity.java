@@ -19,7 +19,7 @@ public class ResultActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 //get rating bar object
-        RatingBar bar = (RatingBar) findViewById(R.id.ratingBar1);
+        //RatingBar bar = (RatingBar) findViewById(R.id.ratingBar1);
 //get text view
         t = (TextView) findViewById(R.id.textResult);
 //get score
@@ -28,7 +28,7 @@ public class ResultActivity extends Activity {
         logger.info(String.valueOf(score));
         //t.setText(score);
 //display score
-        bar.setRating(score);
+      //  bar.setRating(score);
 
         t.setText(score+"");
     }

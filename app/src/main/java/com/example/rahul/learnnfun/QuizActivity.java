@@ -25,15 +25,15 @@ public class QuizActivity extends Activity {
     List<Question> quesList;
     int score = 0;
     int qid = 0;
+    int pid=0;
     Question currentQ;
-    RadioButton radio0,radio1,radio2,radio3;
     TextView t0,t1,t2,t3;
-    Button butNext;
+    Button butNext,butPrev;
     private TextView question_text;
     Logger logger = Logger.getLogger("QuizActivity");
     private String topic_id;
     private String JSON_STRING;
-    RadioGroup radioGroup;
+    String store[][];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +43,6 @@ public class QuizActivity extends Activity {
         question_text = (TextView) findViewById(R.id.question_text);
         Intent intent = getIntent();
         topic_id = intent.getStringExtra(Config.TOPIC_ID);
-       /* radio0 = (RadioButton) findViewById(R.id.radio0);
-        radio1 = (RadioButton) findViewById(R.id.radio1);
-        radio2 = (RadioButton) findViewById(R.id.radio2);
-        radio3 = (RadioButton) findViewById(R.id.radio3);*/
 
         t0 = (TextView) findViewById(R.id.radio0);
         t1 = (TextView) findViewById(R.id.radio1);
@@ -54,6 +50,7 @@ public class QuizActivity extends Activity {
         t3 = (TextView) findViewById(R.id.radio3);
 
         butNext = (Button) findViewById(R.id.button1);
+        butPrev=(Button)findViewById(R.id.button2);
         getQuestion();
     }
 
@@ -106,7 +103,13 @@ public class QuizActivity extends Activity {
                 String op3 = jo.getString(Config.TAG_OP3);
                 String op4 = jo.getString(Config.TAG_OP4);
                 String ans = jo.getString(Config.TAG_ANS);
-                currentQ = new Question(question, op1, op2, op3, op4, ans);
+                currentQ = new Question(question, op1, op2, op3, op4, ans,"null1");
+                currentQ.setQUESTION(question);
+                currentQ.setOPTA(op1);
+                currentQ.setOPTB(op2);
+                currentQ.setOPTC(op3);
+                currentQ.setOPTD(op4);
+                currentQ.setANSWER(ans);
                 quesList.add(currentQ);
                 logger.info(question);
                 logger.info(op1);
@@ -115,18 +118,22 @@ public class QuizActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        store=new String[quesList.size()][3];
         currentQ = quesList.get(qid);
+        store[pid][0]= String.valueOf(qid);
+        store[pid][1]=currentQ.getANSWER();
         setQuestionView();
     }
     public void onclick(View view){
         logger.info(t0.getText().toString());
         switch (view.getId()){
+
             case R.id.radio0:
+                store[pid][2]=t0.getText().toString();
+                currentQ.setResponse(t0.getText().toString());
                 if(currentQ.getANSWER().equalsIgnoreCase(t0.getText().toString())){
                     score++;
-                    t0.setBackgroundColor(Color.GREEN);
+                    t0.setBackgroundColor(Color.rgb(0,100,0));
                     t1.setClickable(false);
                     t2.setClickable(false);
                     t3.setClickable(false);
@@ -135,23 +142,26 @@ public class QuizActivity extends Activity {
                     t0.setBackgroundColor(Color.RED);
                     String s=currentQ.getANSWER();
                     if(s.equalsIgnoreCase(t1.getText().toString())){
-                        t1.setBackgroundColor(Color.GREEN);
+                        t1.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t2.getText().toString())){
-                        t2.setBackgroundColor(Color.GREEN);
+                        t2.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t3.getText().toString())){
-                        t3.setBackgroundColor(Color.GREEN);
+                        t3.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     t1.setClickable(false);
                     t2.setClickable(false);
                     t3.setClickable(false);
                 }
                 break;
+
             case R.id.radio1:
+                store[pid][2]=t1.getText().toString();
+                currentQ.setResponse(t1.getText().toString());
                 if(currentQ.getANSWER().equalsIgnoreCase(t1.getText().toString())){
                     score++;
-                    t1.setBackgroundColor(Color.GREEN);
+                    t1.setBackgroundColor(Color.rgb(0,100,0));
                     t0.setClickable(false);
                     t2.setClickable(false);
                     t3.setClickable(false);
@@ -160,13 +170,13 @@ public class QuizActivity extends Activity {
                     String s=currentQ.getANSWER();
                     t1.setBackgroundColor(Color.RED);
                     if(s.equalsIgnoreCase(t0.getText().toString())){
-                        t0.setBackgroundColor(Color.GREEN);
+                        t0.setBackgroundColor(Color.rgb(0,100,0));
                     }
-                    else if(s.equalsIgnoreCase(t2.getText().toString())){
-                        t2.setBackgroundColor(Color.GREEN);
+                     else if(s.equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t3.getText().toString())){
-                        t3.setBackgroundColor(Color.GREEN);
+                        t3.setBackgroundColor(Color.rgb(0,100,0));
                     }
 
                     t0.setClickable(false);
@@ -176,9 +186,11 @@ public class QuizActivity extends Activity {
                 break;
 
             case R.id.radio2:
+                store[pid][2]=t2.getText().toString();
+                currentQ.setResponse(t2.getText().toString());
                 if(currentQ.getANSWER().equalsIgnoreCase(t2.getText().toString())){
                     score++;
-                    t2.setBackgroundColor(Color.GREEN);
+                    t2.setBackgroundColor(Color.rgb(0,100,0));
                     t1.setClickable(false);
                     t0.setClickable(false);
                     t3.setClickable(false);
@@ -187,13 +199,13 @@ public class QuizActivity extends Activity {
                     t2.setBackgroundColor(Color.RED);
                     String s=currentQ.getANSWER();
                     if(s.equalsIgnoreCase(t1.getText().toString())){
-                        t1.setBackgroundColor(Color.GREEN);
+                        t1.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t0.getText().toString())){
-                        t0.setBackgroundColor(Color.GREEN);
+                        t0.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t3.getText().toString())){
-                        t3.setBackgroundColor(Color.GREEN);
+                        t3.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     t1.setClickable(false);
                     t0.setClickable(false);
@@ -202,9 +214,11 @@ public class QuizActivity extends Activity {
                 break;
 
             case R.id.radio3:
+                store[pid][2]=t3.getText().toString();
+                currentQ.setResponse(t3.getText().toString());
                 if(currentQ.getANSWER().equalsIgnoreCase(t3.getText().toString())){
                     score++;
-                    t3.setBackgroundColor(Color.GREEN);
+                    t3.setBackgroundColor(Color.rgb(0,100,0));
                     t1.setClickable(false);
                     t2.setClickable(false);
                     t0.setClickable(false);
@@ -213,34 +227,124 @@ public class QuizActivity extends Activity {
                     t3.setBackgroundColor(Color.RED);
                     String s=currentQ.getANSWER();
                     if(s.equalsIgnoreCase(t1.getText().toString())){
-                        t1.setBackgroundColor(Color.GREEN);
+                        t1.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t2.getText().toString())){
-                        t2.setBackgroundColor(Color.GREEN);
+                        t2.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     else if(s.equalsIgnoreCase(t0.getText().toString())){
-                        t0.setBackgroundColor(Color.GREEN);
+                        t0.setBackgroundColor(Color.rgb(0,100,0));
                     }
                     t1.setClickable(false);
                     t2.setClickable(false);
                     t0.setClickable(false);
                 }
                 break;
+            default:
         }
+        logger.info(currentQ.getRESPONSE());
+        logger.info(store[pid][0]);
+        logger.info(store[pid][1]);
+        logger.info(store[pid][2]);
+
     }
 
     public void next(View v){
-        t0.setBackgroundColor(Color.WHITE);
-        t1.setBackgroundColor(Color.WHITE);
-        t2.setBackgroundColor(Color.WHITE);
-        t3.setBackgroundColor(Color.WHITE);
-        t0.setClickable(true);
-        t1.setClickable(true);
-        t2.setClickable(true);
-        t3.setClickable(true);
         if(qid<quesList.size()){
-            currentQ=quesList.get(qid);
-            setQuestionView();
+            if(quesList.get(qid).getRESPONSE().equalsIgnoreCase("null1")){
+
+                t0.setBackgroundColor(Color.WHITE);
+                t1.setBackgroundColor(Color.WHITE);
+                t2.setBackgroundColor(Color.WHITE);
+                t3.setBackgroundColor(Color.WHITE);
+                t0.setClickable(true);
+                t1.setClickable(true);
+                t2.setClickable(true);
+                t3.setClickable(true);
+                currentQ=quesList.get(qid);
+                store[qid][0]= String.valueOf(qid);
+                store[qid][1]=currentQ.getANSWER().toString();
+                setQuestionView();
+            }
+            else {
+                int nid=qid;
+                currentQ=quesList.get(nid);
+                setQuestionView();
+                t0.setClickable(false);
+                t1.setClickable(false);
+                t2.setClickable(false);
+                t3.setClickable(false);
+                if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(quesList.get(nid).getANSWER())){
+                    if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.rgb(0,100,0));
+                        t0.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t0.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t0.setBackgroundColor(Color.WHITE);
+                    }
+                }
+                else {
+                    String ans1=quesList.get(nid).getANSWER();
+                    t0.setBackgroundColor(Color.WHITE);
+                    t1.setBackgroundColor(Color.WHITE);
+                    t2.setBackgroundColor(Color.WHITE);
+                    t3.setBackgroundColor(Color.WHITE);
+
+                    if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(nid).getRESPONSE().equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                }
+            }
         }
         else {
             Intent i=new Intent(QuizActivity.this,ResultActivity.class);
@@ -249,18 +353,130 @@ public class QuizActivity extends Activity {
         }
     }
 
-// *************************************************************************************
+    public void previous(View v){
+        pid=pid-1;
+        logger.info("Hidfs"+pid);
+        butPrev.setEnabled(true );
+        if(pid<0)
+            butPrev.setEnabled(false);
+        else {
+            if(quesList.get(pid).getRESPONSE().equalsIgnoreCase("null1")){
+                t0.setBackgroundColor(Color.WHITE);
+                t1.setBackgroundColor(Color.WHITE);
+                t2.setBackgroundColor(Color.WHITE);
+                t3.setBackgroundColor(Color.WHITE);
+                t0.setClickable(true);
+                t1.setClickable(true);
+                t2.setClickable(true);
+                t3.setClickable(true);
+                currentQ=quesList.get(pid);
+                store[pid][0]= String.valueOf(pid);
+                store[pid][1]= currentQ.getANSWER();
+                setPreviousQuestionView();
+            }
+            else {
+                currentQ=quesList.get(pid);
+                setPreviousQuestionView();
+                t0.setClickable(false);
+                t1.setClickable(false);
+                t2.setClickable(false);
+                t3.setClickable(false);
+                logger.info("Rahul");
+                if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(quesList.get(pid).getANSWER())){
+                    if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.rgb(0,100,0));
+                        t0.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t0.setBackgroundColor(Color.WHITE);
+                        t3.setBackgroundColor(Color.WHITE);
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.rgb(0,100,0));
+                        t1.setBackgroundColor(Color.WHITE);
+                        t2.setBackgroundColor(Color.WHITE);
+                        t0.setBackgroundColor(Color.WHITE);
+                    }
+                }
+                else {
+                    String ans1=quesList.get(pid).getANSWER();
+                    t0.setBackgroundColor(Color.WHITE);
+                    t1.setBackgroundColor(Color.WHITE);
+                    t2.setBackgroundColor(Color.WHITE);
+                    t3.setBackgroundColor(Color.WHITE);
+
+                    if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t0.getText().toString())){
+                        t0.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t1.getText().toString())){
+                        t1.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t2.getText().toString())){
+                        t2.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t3.getText().toString()))
+                            t3.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                    else if(quesList.get(pid).getRESPONSE().equalsIgnoreCase(t3.getText().toString())){
+                        t3.setBackgroundColor(Color.RED);
+                        if(ans1.equalsIgnoreCase(t1.getText().toString()))
+                            t1.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t2.getText().toString()))
+                            t2.setBackgroundColor(Color.rgb(0,100,0));
+                        else if(ans1.equalsIgnoreCase(t0.getText().toString()))
+                            t0.setBackgroundColor(Color.rgb(0,100,0));
+                    }
+                }
+            }
+        }
+    }
 
     private void setQuestionView()
     {
-
         question_text.setText(currentQ.getQUESTION());
         t0.setText(currentQ.getOPTA());
         t1.setText(currentQ.getOPTB());
         t2.setText(currentQ.getOPTC());
         t3.setText(currentQ.getOPTD());
-
+        pid=qid;
         qid++;
+        logger.info("QID"+qid);
+    }
+
+    private void setPreviousQuestionView()
+    {
+        question_text.setText(currentQ.getQUESTION());
+        t0.setText(currentQ.getOPTA());
+        t1.setText(currentQ.getOPTB());
+        t2.setText(currentQ.getOPTC());
+        t3.setText(currentQ.getOPTD());
+        qid--;
+        logger.info("PID"+pid);
     }
 
     public void onBackPressed() {
@@ -278,59 +494,5 @@ public class QuizActivity extends Activity {
                     }
                 }).create().show();
     }
-
-
 }
-
-    /*protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz);
-        DbHelper db=new DbHelper(this);
-        quesList=db.getAllQuestions();
-        currentQ=quesList.get(qid);
-        txtQuestion=(TextView)findViewById(R.id.textView1);
-        rda=(RadioButton)findViewById(R.id.radio0);
-        rdb=(RadioButton)findViewById(R.id.radio1);
-        rdc=(RadioButton)findViewById(R.id.radio2);
-        butNext=(Button)findViewById(R.id.button1);
-        setQuestionView();
-        butNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RadioGroup grp=(RadioGroup)findViewById(R.id.radioGroup1);
-                RadioButton answer=(RadioButton)findViewById(grp.getCheckedRadioButtonId());
-                Log.d("yourans", currentQ.getANSWER()+" "+answer.getText());
-                if(currentQ.getANSWER().equals(answer.getText()))
-                {
-                    score++;
-                    Log.d("score", "Your score"+score);
-                }
-                if(qid<5){
-                    currentQ=quesList.get(qid);
-                    setQuestionView();
-                }else{
-                    Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("score", score); //Your score
-                    intent.putExtras(b); //Put your score to your next Intent
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_quiz, menu);
-        return true;
-    }
-    private void setQuestionView()
-    {
-        txtQuestion.setText(currentQ.getQUESTION());
-        rda.setText(currentQ.getOPTA());
-        rdb.setText(currentQ.getOPTB());
-        rdc.setText(currentQ.getOPTC());
-        qid++;
-    }*/
 
