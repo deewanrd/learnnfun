@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 public class QuizActivity extends Activity {
     List<Question> quesList;
     int score = 0;
+    int attempt=0;
     int qid = 0;
     int pid=0;
     Question currentQ;
@@ -126,6 +127,7 @@ public class QuizActivity extends Activity {
     }
     public void onclick(View view){
         logger.info(t0.getText().toString());
+        attempt++;
         switch (view.getId()){
 
             case R.id.radio0:
@@ -349,6 +351,7 @@ public class QuizActivity extends Activity {
         else {
             Intent i=new Intent(QuizActivity.this,ResultActivity.class);
             i.putExtra("score",score);
+            i.putExtra("atmp",attempt);
             startActivity(i);
         }
     }

@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 public class ResultActivity extends Activity {
 
         TextView t;
+        TextView t1;
+        TextView t2;
     Logger logger=Logger.getLogger("ResultActivity");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +24,19 @@ public class ResultActivity extends Activity {
         //RatingBar bar = (RatingBar) findViewById(R.id.ratingBar1);
 //get text view
         t = (TextView) findViewById(R.id.textResult);
+        t1 = (TextView) findViewById(R.id.atmpt);
 //get score
         Bundle b = getIntent().getExtras();
         int score = b.getInt("score");
+        int atmp = b.getInt("atmp");
+        t1.setText(atmp+"");
+        float accurate=0;
+        accurate=score;
+        accurate = (accurate/atmp)*100;
+        int act;
+        act = (int) accurate;
+        t2 = (TextView)findViewById(R.id.accurrate);
+        t2.setText(act+"");
         logger.info(String.valueOf(score));
         //t.setText(score);
 //display score
