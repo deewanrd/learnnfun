@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/learn_apos_n_apos_fun"
         android:gravity="center"
-        android:textSize="60sp"
+        android:textSize="50sp"
         android:textColor="@android:color/holo_green_dark"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

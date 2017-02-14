@@ -2,6 +2,7 @@ package com.example.rahul.learnnfun;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -124,6 +130,10 @@ public class QuizActivity extends Activity {
         store[pid][0]= String.valueOf(qid);
         store[pid][1]=currentQ.getANSWER();
         setQuestionView();
+        logger.info(currentQ.getOPTA());
+        logger.info(currentQ.getOPTB());
+        logger.info(currentQ.getOPTC());
+        logger.info(currentQ.getOPTD());
     }
     public void onclick(View view){
         logger.info(t0.getText().toString());
@@ -349,10 +359,31 @@ public class QuizActivity extends Activity {
             }
         }
         else {
-            Intent i=new Intent(QuizActivity.this,ResultActivity.class);
-            i.putExtra("score",score);
-            i.putExtra("atmp",attempt);
-            startActivity(i);
+            final Dialog dialog=new Dialog(this);
+            dialog.setContentView(R.layout.summary);
+            dialog.setTitle("Quiz Summary");
+            TextView totalValue = (TextView) dialog.findViewById(R.id.totalvalue);
+            TextView correctValue = (TextView) dialog.findViewById(R.id.correctvalue);
+            TextView incorrectValue = (TextView) dialog.findViewById(R.id.incorrectvalue);
+            TextView notAttemptValue = (TextView) dialog.findViewById(R.id.notattemptvalue);
+            totalValue.setText(quesList.size()+"");
+            correctValue.setText(score+"");
+            incorrectValue.setText(quesList.size()-score+"");
+            notAttemptValue.setText(quesList.size()-attempt+"");
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+
+//            Intent i=new Intent(QuizActivity.this,ResultActivity.class);
+//            i.putExtra("score",score);
+//            i.putExtra("atmp",attempt);
+//            startActivity(i);
         }
     }
 
