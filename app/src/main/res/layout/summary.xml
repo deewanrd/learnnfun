@@ -12,8 +12,10 @@
         android:layout_marginLeft="10dp"
         android:paddingLeft="10dp"
         android:text="Quiz Summary"
-        android:textColor="@android:color/holo_green_dark"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textColor="#000000"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="normal|bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,6 +29,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:text="Total"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -35,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="150dp"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
@@ -51,6 +55,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:text="Correct"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -59,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="125dp"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
@@ -75,6 +81,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:text="Incorrect"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -82,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="107dp"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
@@ -98,6 +106,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:text="Not Attempted"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -105,19 +114,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="42dp"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
-    <Button
-    android:id="@+id/dialogButton"
-    android:layout_width="100dp"
-    android:layout_height="wrap_content"
-    android:text="OK"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_below="@+id/image"
-    />
+        <TextView
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="270dp"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:textStyle="normal|bold" />
 
 
 </LinearLayout>

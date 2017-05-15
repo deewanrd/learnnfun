@@ -21,7 +21,6 @@
         <activity android:name=".Topic" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".Login" />
-        <activity android:name=".ResultActivity" />
         <activity android:name=".ProfileActivity" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

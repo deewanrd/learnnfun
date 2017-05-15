@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +11,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.rahul.learnnfun.SplashActivity">
 
+    <ImageView
+        android:src="@mipmap/logo"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/logo"
+        android:layout_marginTop="20dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,21 +26,22 @@
         android:gravity="center"
         android:textSize="50sp"
         android:textColor="@android:color/holo_green_dark"
+        android:layout_marginTop="150dp"
+        android:id="@+id/title"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="94dp"
-        android:id="@+id/textView2" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Online Quiz"
-        android:id="@+id/textView"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/subtitle"
         android:textColor="@android:color/holo_green_dark"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

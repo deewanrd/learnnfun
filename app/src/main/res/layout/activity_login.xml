@@ -16,27 +16,35 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Admin Login"
+            android:text="Student Login"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:fontFamily="cursive" />
 
-        <EditText android:id="@+id/input_username"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            android:text="rahul" />
+            android:layout_marginTop="8dp">
+            <EditText android:id="@+id/input_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Username" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText android:id="@+id/input_password"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:text="123456" />
+            android:layout_marginTop="8dp">
+            <EditText android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Password" />
+        </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_login"
+        <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

@@ -16,5 +16,5 @@
         android:id="@+id/topic_name"
         android:background="@drawable/listview_item"
         android:textSize="20sp"
-        android:textColor="#FFFFFF"/>
+        android:textColor="@android:color/holo_green_dark"/>
 </LinearLayout>

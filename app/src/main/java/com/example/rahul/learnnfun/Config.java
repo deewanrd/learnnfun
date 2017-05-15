@@ -10,6 +10,9 @@ public class Config {
     public static final String URL_GET_TOPIC="http://learnnfun.16mb.com/topic.php";
     public static final String ADMIN_LOGIN_URL = "http://learnnfun.16mb.com/login.php";
     public static final String URL_GET_QUESTION="http://learnnfun.16mb.com/question.php?id=";
+    public static final String URL_ADD_SCORE="http://learnnfun.16mb.com/addScore.php";
+    public static final String URL_GET_SCORE="http://learnnfun.16mb.com/profile.php?username=";
+
 
 
     //Keys that will be used to send the request to php scripts
@@ -30,6 +33,9 @@ public class Config {
     public static final String TAG_OP4 = "op4";
     public static final String TAG_ANS = "ans";
 
+    public static final String TAG_SCORE="score";
+    public static final String TAG_ATTEMPTED="attempt";
+    public static final String TAG_INCORRECT="incorrect";
 
     //employee id to pass with intent
     public static final String TOPIC_ID = "topic_id";
